@@ -1,43 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/questionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Question"
-        android:textSize="20sp"
-        android:layout_marginBottom="16dp" />
-
-    <RadioGroup
-        android:id="@+id/optionsRadioGroup"
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="3">
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_back"
+            android:background="@null"
+            android:contentDescription="backbutton"
+            />
+
+        <TextView
+            android:id="@+id/topicTitle"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:text="Algebra Basics"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+        <!--ImageButton
+            android:id="@+id/bookmarkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bookmark"
+            android:background="@null" />-->
+    </LinearLayout>
+
+    <!-- Progress + Timer -->
+    <LinearLayout
+        android:id="@+id/progressTimer"
+        android:layout_below="@id/topBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginTop="16dp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical">
 
+        <TextView
+            android:id="@+id/questionProgress"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="Question 3 of 10"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:45" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_below="@id/progressTimer"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:progress="30"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressTint="@color/blue" />
+
+    <!-- Question -->
     <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="wrap_content"
+        android:id="@+id/questionText"
+        android:layout_below="@id/progressBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="What is the value of x in the equation..."
         android:textSize="18sp"
-        android:layout_marginTop="24dp"/>
-    <Button
-        android:id="@+id/backButton"
+        android:layout_marginTop="24dp" />
+
+    <!-- Options -->
+    <RadioGroup
+        android:id="@+id/optionsGroup"
+        android:layout_below="@id/questionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+    </RadioGroup>
+
+    <!-- Navigation Buttons -->
+    <LinearLayout
+        android:id="@+id/navButtons"
+        android:layout_below="@id/optionsGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/prevButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Previous" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Flag Question -->
+    <TextView
+        android:id="@+id/flagQuestion"
+        android:layout_below="@id/navButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="⚑ Flag Question"
+        android:textColor="@color/gray"
         android:layout_marginTop="16dp" />
-</LinearLayout>
+</RelativeLayout>

@@ -1,94 +1,95 @@
 package com.example.mcqtest
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private val questions = listOf(
-        Question("1. What creates a magnetic field?", listOf("Stationary charges", "Heat energy", "Moving electric charges", "Light waves"), 2),
-        Question("2. What is the unit of magnetic field strength?", listOf( "Volt (V)", "Newton (N)", "Tesla (T)", "Ohm (Ω)"), 2),
-        Question("3. Which law states that a changing magnetic field induces an electric field?", listOf("Gauss's Law", "Ampère’s Law", "Faraday’s Law", "Coulomb’s Law"), 2),
-        Question("4. The direction of an electromagnetic wave is perpendicular to:", listOf("The electric field only", "The magnetic field only", "Both electric and magnetic fields", "The electric field but parallel to the magnetic field"), 2),
-        Question("5. What is the speed of electromagnetic waves in a vacuum?", listOf("3 × 10⁶ m/s", "3 × 10⁸ m/s", "1.5 × 10⁸ m/s", "3 × 10⁵ m/s"), 1),
-        Question("6. Which of the following is NOT an electromagnetic wave?", listOf( "Radio wave", "Sound wave", "X-ray", "Light wave"), 1),
-        Question("7. Which equation describes how electric field lines originate and terminate?", listOf("Faraday’s Law", "Gauss’s Law for electricity", "Gauss’s Law for magnetism", "Ampère’s Law"), 1),
-        Question("8. What does Maxwell’s correction to Ampère’s Law include?", listOf("Magnetic monopoles", "Displacement current", "Coulomb force", "Resistance"), 1),
-        Question("9. Electromagnetic waves are classified as:", listOf("Longitudinal waves", "Transverse waves", "Mechanical waves", "Standing waves"), 1),
-        Question("10. What happens when an electric field changes with time?", listOf("It produces static electricity", "It generates a magnetic field", "It stops the magnetic field", "Nothing happens"), 1)
+    data class Question(
+        val text: String,
+        val options: List<String>,
+        val correctIndex: Int
     )
 
-    private var currentQuestionIndex = 0
+    private val questions = listOf(
+        Question("What is the value of x in the equation...", listOf("x = 4", "x = 6", "x = 8", "x = 10"), 2),
+        // Add more...
+    )
+
+    private var currentIndex = 0
     private var score = 0
 
-    private lateinit var questionTextView: TextView
-    private lateinit var optionsRadioGroup: RadioGroup
-    private lateinit var submitButton: Button
-    private lateinit var scoreTextView: TextView
-    private lateinit var backbutton: Button
+    private lateinit var questionText: TextView
+    private lateinit var optionsGroup: RadioGroup
+    private lateinit var questionProgress: TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var timerText: TextView
+
+    private lateinit var nextButton: Button
+    private lateinit var prevButton: Button
+
+    private lateinit var countDownTimer: CountDownTimer
+    private var timeLeftInMillis = 15 * 60 * 1000L // 15 minutes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        questionTextView = findViewById(R.id.questionTextView)
-        optionsRadioGroup = findViewById(R.id.optionsRadioGroup)
-        submitButton = findViewById(R.id.submitButton)
-        scoreTextView = findViewById(R.id.scoreTextView)
-        backbutton = findViewById(R.id.backButton)
+        questionText = findViewById(R.id.questionText)
+        optionsGroup = findViewById(R.id.optionsGroup)
+        questionProgress = findViewById(R.id.questionProgress)
+        progressBar = findViewById(R.id.progressBar)
+        timerText = findViewById(R.id.timerText)
 
+        nextButton = findViewById(R.id.nextButton)
+        prevButton = findViewById(R.id.prevButton)
+
+        startTimer()
         loadQuestion()
 
-        submitButton.setOnClickListener {
-            val selectedOptionId = optionsRadioGroup.checkedRadioButtonId
-
-            if (selectedOptionId != -1) {
-                val selectedIndex = optionsRadioGroup.indexOfChild(findViewById(selectedOptionId))
-
-                if (selectedIndex == questions[currentQuestionIndex].correctAnswerIndex) {
-                    score++
-                }
-
-                currentQuestionIndex++
-
-                if (currentQuestionIndex < questions.size) {
-                    loadQuestion()
-                } else {
-                    showFinalScore()
-                }
-            } else {
-                Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show()
+        nextButton.setOnClickListener {
+            if (currentIndex < questions.size - 1) {
+                currentIndex++
+                loadQuestion()
             }
         }
-        backbutton.setOnClickListener {
-            currentQuestionIndex = 0
-            score = 0
-            submitButton.isEnabled = true
-            scoreTextView.text = ""
-            loadQuestion()
-        }
 
+        prevButton.setOnClickListener {
+            if (currentIndex > 0) {
+                currentIndex--
+                loadQuestion()
+            }
+        }
+    }
+
+    private fun startTimer() {
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                val minutes = (timeLeftInMillis / 1000) / 60
+                val seconds = (timeLeftInMillis / 1000) % 60
+                timerText.text = String.format("%02d:%02d", minutes, seconds)
+            }
+
+            override fun onFinish() {
+                Toast.makeText(this@MainActivity, "Time's up!", Toast.LENGTH_SHORT).show()
+            }
+        }.start()
     }
 
     private fun loadQuestion() {
-        val question = questions[currentQuestionIndex]
-        questionTextView.text = question.questionText
-        optionsRadioGroup.removeAllViews()
-        backbutton.isEnabled = false
+        val question = questions[currentIndex]
+        questionText.text = question.text
+        questionProgress.text = "Question ${currentIndex + 1} of ${questions.size}"
+        progressBar.progress = ((currentIndex + 1) * 100 / questions.size)
 
-        for (option in question.options) {
+        optionsGroup.removeAllViews()
+        for ((i, option) in question.options.withIndex()) {
             val radioButton = RadioButton(this)
             radioButton.text = option
-            optionsRadioGroup.addView(radioButton)
+            optionsGroup.addView(radioButton)
         }
-    }
-
-    private fun showFinalScore() {
-        questionTextView.text = "Test Completed!"
-        optionsRadioGroup.removeAllViews()
-        submitButton.isEnabled = false
-        scoreTextView.text = "Your score: $score/${questions.size}"
-        backbutton.isEnabled = true
     }
 }
