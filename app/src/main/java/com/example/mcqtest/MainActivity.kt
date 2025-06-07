@@ -15,11 +15,16 @@ class MainActivity : AppCompatActivity() {
     )
 
     private val questions = listOf(
-        Question("What is the value of x in the equation 2x = 16?", listOf("x = 4", "x = 6", "x = 8", "x = 10"), 2),
-        Question("Capital of France?", listOf("London", "Berlin", "Madrid", "Paris"), 3),
-        Question("Which number is prime?", listOf("6", "8", "11", "9"), 2),
-        Question("What is the square root of 81?", listOf("7", "8", "9", "10"), 2),
-        Question("Largest planet?", listOf("Earth", "Mars", "Jupiter", "Venus"), 2),
+        Question("What creates a magnetic field?", listOf("Stationary charges", "Heat energy", "Moving electric charges", "Light waves"), 2),
+        Question("Which law states that a changing magnetic field induces an electric field?", listOf("Gauss's Law", "Ampère’s Law", "Faraday’s Law", "Coulomb’s Law"), 3),
+        Question("What is the unit of magnetic field strength?", listOf("Volt (V)", "Newton (N)", "Tesla (T)", "Ohm (Ω"), 3),
+        Question("The direction of an electromagnetic wave is perpendicular to:", listOf("The electric field only", "The magnetic field only", "Both electric and magnetic fields", "The electric field but parallel to the magnetic field"), 2),
+        Question("What is the speed of electromagnetic waves in a vacuum?", listOf("3 × 10⁶ m/s", "3 × 10⁸ m/s", "1.5 × 10⁸ m/s", "3 × 10⁵ m/s"), 1),
+        Question(" Which of the following is NOT an electromagnetic wave?", listOf("Radio wave", "Sound wave", "X-ray", "Light wave"), 1),
+        Question("Which equation describes how electric field lines originate and terminate?", listOf("Faraday’s Law", "Gauss’s Law for electricity", "Gauss’s Law for magnetism", "Ampère’s Law"), 1),
+        Question("What does Maxwell’s correction to Ampère’s Law include?", listOf("Magnetic monopoles", "Displacement current", "Coulomb force", "Resistance"), 1),
+        Question("Electromagnetic waves are classified as:", listOf("Longitudinal waves", "Transverse waves", "Mechanical waves", "Standing waves"), 1),
+        Question("What happens when an electric field changes with time?", listOf("It produces static electricity", "It generates a magnetic field", "It stops the magnetic field", "Nothing happens"), 1),
     )
 
     private var currentIndex = 0
