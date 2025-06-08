@@ -1,5 +1,4 @@
 package com.example.mcqtest
-
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.*
